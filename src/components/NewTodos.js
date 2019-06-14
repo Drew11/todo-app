@@ -8,8 +8,8 @@ import React from 'react';
       setItemStatus,
       status
      }
-     ){
-
+ )
+ {
         return <li
                 key={text}
                 data-index={index}
