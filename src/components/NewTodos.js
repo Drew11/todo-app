@@ -29,7 +29,7 @@ import React from 'react';
            </div>
             <span className={"todo-text"}
                 key={index}
-                onClick={()=>edit(index)}
+                onDoubleClick={()=>edit(index)}
             > {text}</span>
 
             <button

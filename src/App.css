@@ -66,6 +66,16 @@ main {
     width: inherit;
 }
 
+.arrow {
+    cursor: pointer;
+    font-size: 30px;
+    transform: rotate(90deg);
+    opacity: 0.4;
+}
+.arrow:hover {
+    opacity: 1;
+}
+
 li.todo {
     display: flex;
     height: 60px;

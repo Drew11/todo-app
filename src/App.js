@@ -14,6 +14,7 @@ class TodoApp extends React.Component {
             completed: [],
             clickedComplete: false,
             editing: false,
+            selected: false
         };
 
         this.removeTodo = this.removeTodo.bind(this);
@@ -28,7 +29,7 @@ class TodoApp extends React.Component {
 
     removeTodo(index) {
         const todos = [...this.state.todos],
-            upDateTodos = todos.filter((curr, i) => i!==index);
+            upDateTodos = todos.filter((curr, i) => i !== index);
         this.setState({todos: upDateTodos})
     }
 
@@ -40,7 +41,7 @@ class TodoApp extends React.Component {
     }
 
     addEditingValues(event) {
-        if(!event.target.value){
+        if (!event.target.value) {
             return alert("sorry empty text, type something")
         }
         const todos = [...this.state.todos];
@@ -59,6 +60,38 @@ class TodoApp extends React.Component {
         todos[index]['completed'] = event.target.checked;
         this.setState({todos: todos})
     }
+
+
+    toggleTodos = () => {
+        const todos = [...this.state.todos];
+        let clicked = this.state.selected;
+
+
+        if (!this.state.selected) {
+            todos.map((todo) => {
+                if (!todo['completed']) {
+                    todo['completed'] = true;
+                }
+                return todo;
+            });
+            clicked = true
+        }
+
+        if (this.state.selected) {
+            todos.map((todo) => {
+                if (todo['completed']) {
+                    todo['completed'] = false;
+                }
+                return todo;
+            });
+            clicked = false;
+        }
+
+        this.setState({
+            todos: todos,
+            selected: clicked
+        })
+    };
 
 
     getAllTodos() {
@@ -87,18 +120,12 @@ class TodoApp extends React.Component {
             todos: clearTodos,
             clickedComplete: false
         });
-
     }
 
-
     render() {
-        console.log(this.state);
-
-        let todos = this.state.todos;
-
-
+        let todos = [...this.state.todos];
         if (this.state.clickedComplete === true) {
-            todos = this.state.completed;
+            todos = [...this.state.completed];
         }
         const todosItem = todos.map((item, index) => {
             return <NewTodo
@@ -111,14 +138,24 @@ class TodoApp extends React.Component {
             />
         });
 
-
         return (
             <section className={'todo-app'}>
                 <header className="todo-header">
                     <h1>todos</h1>
+                    {this.state.todos.length > 0 ?
+                        <span
+                            className={"arrow"}
+                            onClick={this.toggleTodos}
+                        >
+                            ❯
+                        </span>
+
+                        : null
+
+                    }
                     <input
                         onKeyPress={(event) => {
-                            if(event.target.value===''){
+                            if (event.target.value === '') {
                                 return;
                             }
                             const initialTodo = [...this.state.todos, {
@@ -136,52 +173,50 @@ class TodoApp extends React.Component {
                         className={"new-todo"}
                         placeholder={"What needs to be done?"}
                     >
-
                     </input>
-
                 </header>
                 <main>
                     {
                         <ul className={"todo-list"}>
-                        {!this.state.editing ?
-                            this.state.todos.length>0 ? todosItem : null
-                            :
-                            <input
-                                className={"todo-edit"}
-                                type='text'
-                                defaultValue={this.state.todos[this.state.todoIndex]['text']}
-                                onKeyPress={(event) => {
-                                    this.addEditingValues(event)
-                                }}
-                            >
+                            {!this.state.editing ?
+                                this.state.todos.length > 0 ? todosItem : null
+                                :
+                                <input
+                                    className={"todo-edit"}
+                                    type='text'
+                                    defaultValue={this.state.todos[this.state.todoIndex]['text']}
+                                    onKeyPress={(event) => {
+                                        this.addEditingValues(event)
+                                    }}
+                                >
 
-                            </input>
-                        }
-                    </ul>}
+                                </input>
+                            }
+                        </ul>}
                 </main>
 
                 <footer className="todo-status"
 
                 >
-                    {this.state.todos.length>0?
+                    {this.state.todos.length > 0 ?
                         <ul className="todo-filters">
 
-                            <li>
+                            <li key={"1jb908"}>
                                 <a href="#2"
                                    onClick={this.getAllTodos}
                                 >All</a>
                             </li>
-                            <li >
+                            <li key={"nk890098"}>
                                 <a href="#1"
                                    onClick={this.getCompletedTodos}
                                 >Completed</a>
                             </li>
-                            <li>
+                            <li key={"knou8u709"}>
                                 <a href="#3"
                                    onClick={this.clearCompletedTodos}
                                 >Clear Completed</a>
                             </li>
-                        </ul>:null
+                        </ul> : null
                     }
 
                 </footer>
